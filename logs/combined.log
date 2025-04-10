@@ -2,3 +2,5 @@
 {"level":"info","message":"Servidor corriendo en http://localhost:3001","service":"pb-backend","timestamp":"2025-04-10 00:52:37"}
 {"level":"info","message":"Conexión a la base de datos establecida correctamente.","service":"pb-backend","timestamp":"2025-04-10 00:52:48"}
 {"level":"info","message":"Servidor corriendo en http://localhost:3001","service":"pb-backend","timestamp":"2025-04-10 00:52:48"}
+{"level":"info","message":"Conexión a la base de datos establecida correctamente.","service":"pb-backend","timestamp":"2025-04-10 00:55:37"}
+{"level":"info","message":"Servidor corriendo en http://localhost:3001","service":"pb-backend","timestamp":"2025-04-10 00:55:37"}
