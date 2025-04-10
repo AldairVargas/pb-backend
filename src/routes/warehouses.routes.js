@@ -6,8 +6,8 @@ import { verifyToken } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-router.get("/warehouses", verifyToken, getWarehouses);
-router.get("/warehouses/:id", verifyToken, getWarehouseById);
+router.get("/warehouses", getWarehouses);
+router.get("/warehouses/:id", getWarehouseById);
 router.post("/warehouses", verifyToken, warehouseValidator, validate, createWarehouse);
 router.put("/warehouses/:id", verifyToken, warehouseValidator, validate, updateWarehouse);
 router.put("/warehouses/:id/status", verifyToken, warehouseStatusValidator, validate, updateWarehouseStatus);
