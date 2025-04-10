@@ -51,7 +51,6 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find user
     const user = await User.findOne({
       where: { email },
       include: [{ model: Role }]
@@ -61,24 +60,22 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Verify password
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Generate JWT token
+    // Generate JWT token with role information
     const token = jwt.sign(
       { 
         id: user.user_id, 
         email: user.email,
-        role: user.Role.role_name 
+        role: user.Role.role_name // This will be "Admin", "User", or "SuperAdmin"
       },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
 
-    // Remove password from response
     const userWithoutPassword = user.toJSON();
     delete userWithoutPassword.password;
 
