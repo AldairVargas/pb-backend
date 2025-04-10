@@ -8,6 +8,7 @@ import warehouseRoutes from "./routes/warehouses.routes.js";
 import roleRoutes from "./routes/roles.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import sequelize from "./config/database.js";
+import logger from './utils/logger.js';
 
 const app = express();
 app.use(express.json());
@@ -25,13 +26,13 @@ const PORT = process.env.PORT || 3001;
 async function startServer() {
   try {
     await sequelize.authenticate();
-    console.log("Conexión a la base de datos establecida correctamente.");
+    logger.info("Conexión a la base de datos establecida correctamente.");
 
     app.listen(PORT, () => {
-      console.log(`Servidor corriendo en http://localhost:${PORT}`);
+      logger.info(`Servidor corriendo en http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error("Error al conectar a la base de datos:", error);
+    logger.error("Error al conectar a la base de datos:", error);
   }
 }
 
