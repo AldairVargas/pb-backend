@@ -4,12 +4,15 @@
   "description": "Repositorio backend para proyecto de renta de bodegas.",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint . --ext .js,.mjs --fix",
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
-  },
+"scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "lint": "eslint . --ext .js,.mjs --fix",
+  "dev": "NODE_ENV=dev dotenv -e ./envs/.env.dev nodemon src/index.js",
+  "start:dev": "NODE_ENV=dev dotenv -e ./envs/.env.dev nodemon src/index.js",
+  "start:test": "NODE_ENV=test dotenv -e ./envs/.env.test nodemon src/index.js",
+  "start:prod": "NODE_ENV=prod dotenv -e ./envs/.env.prod node src/index.js",
+  "start": "node src/index.js"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -28,6 +31,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^9.22.0",
     "globals": "^16.0.0",
     "nodemon": "^3.1.9"

@@ -9,6 +9,10 @@ import roleRoutes from "./routes/roles.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import sequelize from "./config/database.js";
 import logger from './utils/logger.js';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: `./envs/.env.${process.env.NODE_ENV}` });
+logger.info(`Iniciando la aplicación en el entorno: ${process.env.NODE_ENV}`);
 
 const app = express();
 app.use(express.json());
