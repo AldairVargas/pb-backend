@@ -48,6 +48,12 @@ const User = sequelize.define("User", {
       model: Role,
       key: 'role_id'
     }
+  },
+  active: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+    comment: 'User activation status'
   }
 }, {
   tableName: 'Users',
