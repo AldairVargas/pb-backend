@@ -74,3 +74,16 @@ export const updateWarehouseStatus = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const deleteWarehouse = async (req, res) => {
+  try {
+    const warehouse = await Warehouse.findByPk(req.params.id);
+    if (!warehouse) {
+      return res.status(404).json({ message: "Warehouse not found" });
+    }
+    await warehouse.destroy();
+    res.json({ message: "Warehouse deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

@@ -1,5 +1,5 @@
 import express from "express";
-import { getWarehouses, getWarehouseById, createWarehouse, updateWarehouse, updateWarehouseStatus } from "../controllers/warehouse.controller.js";
+import { getWarehouses, getWarehouseById, createWarehouse, updateWarehouse, updateWarehouseStatus, deleteWarehouse } from "../controllers/warehouse.controller.js";
 import { warehouseValidator, warehouseStatusValidator } from "../middleware/validators/warehouse.validator.js";
 import { validate } from "../middleware/validate.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
@@ -34,6 +34,13 @@ router.put("/warehouses/:id/status",
   warehouseStatusValidator, 
   validate, 
   updateWarehouseStatus
+);
+
+router.delete("/warehouses/:id", 
+  verifyToken, 
+  checkRole("Admin", "SuperAdmin"),
+  validate, 
+  deleteWarehouse
 );
 
 export default router;

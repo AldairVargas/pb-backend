@@ -42,3 +42,21 @@ export const updateSite = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const deleteSite = async (req, res) => {
+  try {
+    const site = await Site.findByPk(req.params.id);
+    if (!site) {
+      return res.status(404).json({ message: "Site not found" });
+    }
+    await site.destroy();
+    res.json({ message: "Site deleted successfully" });
+  } catch (error) {
+    if (error.name === 'SequelizeForeignKeyConstraintError') {
+      return res.status(400).json({ 
+        message: "Cannot delete site because it is being used by other records" 
+      });
+    }
+    res.status(500).json({ message: error.message });
+  }
+};

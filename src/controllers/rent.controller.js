@@ -62,3 +62,20 @@ export const updateRentStatus = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const deleteRent = async (req, res) => {
+  try {
+    const rent = await Rent.findByPk(req.params.id);
+    if (!rent) {
+      return res.status(404).json({ message: "Rent not found" });
+    }
+    await Warehouse.update(
+      { status: 'available' },
+      { where: { warehouse_id: rent.warehouse_id } }
+    );
+    await rent.destroy();
+    res.json({ message: "Rent deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

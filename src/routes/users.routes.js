@@ -1,5 +1,5 @@
 import express from "express";
-import { getUsers, getUserById, createUser, updateUser } from "../controllers/user.controller.js";
+import { getUsers, getUserById, createUser, updateUser, deleteUser } from "../controllers/user.controller.js";
 import { userValidator, userUpdateValidator } from "../middleware/validators/user.validator.js";
 import { validate } from "../middleware/validate.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
@@ -11,5 +11,6 @@ router.get("/users", verifyToken, checkRole("Admin", "SuperAdmin"), getUsers);
 router.get("/users/:id", verifyToken, checkRole("Admin", "SuperAdmin"), getUserById);
 router.post("/users", verifyToken, checkRole("SuperAdmin"), userValidator, validate, createUser);
 router.put("/users/:id", verifyToken, checkRole("SuperAdmin"), userUpdateValidator, validate, updateUser);
+router.delete("/users/:id", verifyToken, checkRole("SuperAdmin"), deleteUser, validate);
 
 export default router;
