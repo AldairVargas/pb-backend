@@ -6,27 +6,27 @@ export const register = async (req, res) => {
   try {
     const { email, password, first_name, last_name, phone, role_id } = req.body;
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Validación de formato de correo
+    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ message: "Invalid email format" });
+      return res.status(400).json({ message: "Formato de correo inválido" });
     }
 
-    // Check if user already exists
+    // Verificar si el correo ya existe
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ message: "Email already registered" });
+      return res.status(400).json({ message: "El correo ya está registrado" });
     }
 
-    // Validate password strength
+    // Validar longitud de contraseña
     if (password.length < 6) {
-      return res.status(400).json({ message: "Password must be at least 6 characters long" });
+      return res.status(400).json({ message: "La contraseña debe tener al menos 6 caracteres" });
     }
 
-    // Hash password
+    // Encriptar contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
+    // Crear usuario
     const user = await User.create({
       email,
       password: hashedPassword,
@@ -34,10 +34,10 @@ export const register = async (req, res) => {
       last_name,
       phone,
       role_id,
-      registration_date: new Date()
+      registration_date: new Date(),
+      active: true
     });
 
-    // Remove password from response
     const userWithoutPassword = user.toJSON();
     delete userWithoutPassword.password;
 
@@ -57,23 +57,29 @@ export const login = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Credenciales inválidas" });
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Credenciales inválidas" });
     }
 
-    // Generate JWT token with role information
+    // Verificar si el usuario está activo
+    if (!user.active) {
+      return res.status(401).json({
+        message: "Esta cuenta ha sido desactivada. Contacta al administrador."
+      });
+    }
+
     const token = jwt.sign(
-      { 
-        id: user.user_id, 
+      {
+        id: user.user_id,
         email: user.email,
-        role: user.Role.role_name // This will be "Admin", "User", or "SuperAdmin"
+        role: user.Role?.role_name
       },
       process.env.JWT_SECRET,
-      { expiresIn: '24h' }
+      { expiresIn: "24h" }
     );
 
     const userWithoutPassword = user.toJSON();
