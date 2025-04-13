@@ -37,6 +37,21 @@ const Payment = sequelize.define("Payment", {
       model: Rent,
       key: 'rent_id'
     }
+  },
+  stripe_customer_id: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    comment: 'Stripe customer identifier'
+  },
+  stripe_subscription_id: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    comment: 'Stripe subscription identifier'
+  },
+  stripe_payment_intent_id: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    comment: 'Stripe payment intent identifier'
   }
 }, {
   tableName: 'Payments',
