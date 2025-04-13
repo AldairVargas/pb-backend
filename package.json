@@ -4,15 +4,15 @@
   "description": "Repositorio backend para proyecto de renta de bodegas.",
   "main": "index.js",
   "type": "module",
-"scripts": {
-  "test": "echo \"Error: no test specified\" && exit 1",
-  "lint": "eslint . --ext .js,.mjs --fix",
-  "dev": "NODE_ENV=dev dotenv -e ./envs/.env.dev nodemon src/index.js",
-  "start:dev": "NODE_ENV=dev dotenv -e ./envs/.env.dev nodemon src/index.js",
-  "start:test": "NODE_ENV=test dotenv -e ./envs/.env.test nodemon src/index.js",
-  "start:prod": "NODE_ENV=prod dotenv -e ./envs/.env.prod node src/index.js",
-  "start": "node src/index.js"
-},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .js,.mjs --fix",
+    "dev": "NODE_ENV=dev dotenv -e ./envs/.env.dev nodemon src/index.js",
+    "start:dev": "NODE_ENV=dev dotenv -e ./envs/.env.dev nodemon src/index.js",
+    "start:test": "NODE_ENV=test dotenv -e ./envs/.env.test nodemon src/index.js",
+    "start:prod": "NODE_ENV=prod dotenv -e ./envs/.env.prod node src/index.js",
+    "start": "node src/index.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -26,6 +26,7 @@
     "mariadb": "^3.4.0",
     "mysql2": "^3.12.0",
     "sequelize": "^6.37.7",
+    "stripe": "^18.0.0",
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0"
   },

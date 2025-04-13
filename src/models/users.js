@@ -49,6 +49,12 @@ const User = sequelize.define("User", {
       key: 'role_id'
     }
   },
+  stripe_customer_id: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    unique: true,
+    comment: 'Stripe customer identifier'
+  },
   active: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
