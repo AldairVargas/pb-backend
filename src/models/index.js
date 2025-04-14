@@ -7,6 +7,7 @@ import Notification from './notifications.js';
 import Rent from './rents.js';
 import Payment from './payments.js';
 import UserWarehouse from './user_warehouses.js';
+import PasswordResetCode from './PasswordResetCode.js';
 
 // Define relationships
 User.belongsTo(Role, { foreignKey: 'role_id' });
@@ -40,5 +41,6 @@ export {
   Notification,
   Rent,
   Payment,
-  UserWarehouse
+  UserWarehouse,
+  PasswordResetCode
 };

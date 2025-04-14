@@ -13,4 +13,14 @@ const sequelize = new Sequelize(
   }
 );
 
+
+export const syncDatabase = async () => {
+  try {
+    await sequelize.sync({ alter: true });
+    console.log("✅ Modelos actualizados correctamente (sin pérdida de datos)");
+  } catch (error) {
+    console.error("❌ Error al sincronizar la base de datos:", error);
+  }
+};
+
 export default sequelize;
