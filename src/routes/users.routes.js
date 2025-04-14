@@ -14,9 +14,9 @@ import { checkRole } from "../middleware/roleAuth.middleware.js";
 const router = express.Router();
 
 router.get("/users", verifyToken, checkRole("Admin", "SuperAdmin"), getUsers);
-router.get("/users/:id", verifyToken, checkRole("Admin", "SuperAdmin"), getUserById);
+router.get("/users/:id", verifyToken, checkRole("Admin", "SuperAdmin", "User"), getUserById);
 router.post("/users", verifyToken, checkRole("SuperAdmin"), userValidator, validate, createUser);
-router.put("/users/:id", verifyToken, checkRole("SuperAdmin"), userUpdateValidator, validate, updateUser);
+router.put("/users/:id", verifyToken, checkRole("User", "SuperAdmin"), userUpdateValidator, validate, updateUser);
 router.put("/users/:id/status", verifyToken, checkRole("SuperAdmin"), updateUserStatus);
 
 export default router;
