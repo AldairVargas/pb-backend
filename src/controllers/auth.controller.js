@@ -187,7 +187,7 @@ export const resetPassword = async (req, res) => {
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (error) {
-      return res.status(400).json({ message: "Token inválido o expirado" });
+      return res.status(400).json(error, { message: "Token inválido o expirado" });
     }
 
     const email = decoded.email;

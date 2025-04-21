@@ -186,3 +186,64 @@ export const handleWebhook = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+
+export const getCustomerSubscriptions = async (req, res) => {
+  try {
+    const { user_id } = req.params;
+
+    // Buscar el usuario y verificar que existe
+    const user = await User.findByPk(user_id);
+    if (!user || !user.stripe_customer_id) {
+      return res.status(404).json({ message: 'Usuario no encontrado o sin suscripciones' });
+    }
+
+    // Obtener todas las suscripciones del cliente desde Stripe
+    const subscriptions = await stripe.subscriptions.list({
+      customer: user.stripe_customer_id,
+      expand: ['data.default_payment_method', 'data.items.data.price']
+    });
+
+    // Obtener los pagos asociados a las suscripciones
+    const payments = await Payment.findAll({
+      where: {
+        stripe_customer_id: user.stripe_customer_id
+      },
+      include: [{
+        model: Rent,
+        include: [{ model: Warehouse }]
+      }]
+    });
+
+    // Mapear las suscripciones con información adicional
+    const subscriptionDetails = subscriptions.data.map(subscription => {
+      const payment = payments.find(p => p.stripe_subscription_id === subscription.id);
+      const product = subscription.items.data[0].price.product;
+
+      return {
+        subscription_id: subscription.id,
+        status: subscription.status,
+        current_period_start: new Date(subscription.current_period_start * 1000),
+        current_period_end: new Date(subscription.current_period_end * 1000),
+        payment_status: payment ? payment.status : 'desconocido',
+        warehouse: payment?.Rent?.Warehouse || null,
+        product: {
+          name: product.name,
+          description: product.description,
+          metadata: product.metadata
+        },
+        payment_method: subscription.default_payment_method ? {
+          brand: subscription.default_payment_method.card.brand,
+          last4: subscription.default_payment_method.card.last4,
+          exp_month: subscription.default_payment_method.card.exp_month,
+          exp_year: subscription.default_payment_method.card.exp_year
+        } : null
+      };
+    });
+
+    res.json(subscriptionDetails);
+  } catch (error) {
+    console.error('Error al obtener suscripciones:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+};
