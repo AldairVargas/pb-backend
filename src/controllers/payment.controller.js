@@ -127,6 +127,12 @@ const payment = await Payment.create({
   stripe_subscription_id: subscription.id
 });
 
+// Update warehouse status to occupied
+await Warehouse.update(
+  { status: 'occupied' },
+  { where: { warehouse_id: rent.Warehouse.warehouse_id } }
+);
+
 res.status(201).json({
   payment,
   subscription_id: subscription.id,
