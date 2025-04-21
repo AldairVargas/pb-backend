@@ -1,6 +1,5 @@
 import Stripe from 'stripe';
 import { Payment, Rent, Warehouse, User } from '../models/index.js';
-import { sendLatePaymentNotification } from './notificacion.controller.js';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -21,12 +20,6 @@ export const createPayment = async (req, res) => {
     if (!rent) {
       return res.status(404).json({ message: 'Rent not found or warehouse not available' });
     }
-
-    // Verificar si hay pagos atrasados
-    if (rent.payment_status === 'overdue') {
-      await sendLatePaymentNotification(rent.User, rent.Warehouse, rent);
-    }
-
     // Create or retrieve Stripe customer
     let customerId = rent.User.stripe_customer_id;
     if (!customerId) {
