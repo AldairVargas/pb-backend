@@ -1,5 +1,5 @@
 import sgMail from '@sendgrid/mail';
-import { Rent, User, Warehouse } from "../models/index.js";
+import { Rent, User, Warehouse, Notification } from "../models/index.js";
 
 export const getRents = async (req, res) => {
   try {
@@ -42,6 +42,15 @@ export const createRent = async (req, res) => {
     
     // Enviar notificación por correo electrónico
     await sendRentNotificationEmail(user, warehouse, rent);
+    
+    // Registrar notificación en la base de datos
+    await Notification.create({
+      notification_type: 'rent_confirmation',
+      sent_date: new Date(),
+      status: 'sent',
+      user_id: user.user_id,
+      warehouse_id: warehouse.warehouse_id
+    });
     
     res.status(201).json(rent);
   } catch (error) {
